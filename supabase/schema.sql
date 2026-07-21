@@ -32,7 +32,8 @@ create table if not exists public.projects (
   kind        text,                 -- ex.: 'Poder Legislativo'
   url         text,                 -- link do site
   site_label  text,                 -- texto exibido (ex.: 'doresopolis.mg.leg.br')
-  badge       text,                 -- iniciais (ex.: 'CD')
+  badge       text,                 -- iniciais (ex.: 'CD') — usado se não houver logo
+  logo_url    text,                 -- caminho/URL da logo (ex.: 'assets/logos/camara.png')
   accent      text default 'pref',  -- 'camara' | 'santa' | 'pref' ou um hex (#2f6f9e)
   sort        int  not null default 0,
   published   boolean not null default true
@@ -105,10 +106,10 @@ create policy services_read_public on public.services
 --  DADOS INICIAIS (seed) — projetos e serviços reais do site
 --  (Depoimentos NÃO são semeados: cadastre os reais no painel.)
 -- ============================================================
-insert into public.projects (name, kind, url, site_label, badge, accent, sort) values
-  ('Câmara Municipal de Doresópolis', 'Poder Legislativo', 'https://www.doresopolis.mg.leg.br/', 'doresopolis.mg.leg.br', 'CD', 'camara', 1),
-  ('Santa Casa de Misericórdia — Piumhi', 'Saúde', 'https://www.santacasapiumhi.com.br/', 'santacasapiumhi.com.br', 'SC', 'santa', 2),
-  ('Prefeitura Municipal de Doresópolis', 'Poder Executivo', 'https://www.doresopolis.mg.gov.br/', 'Doresópolis · Um Novo Tempo', 'PD', 'pref', 3)
+insert into public.projects (name, kind, url, site_label, badge, logo_url, accent, sort) values
+  ('Câmara Municipal de Doresópolis', 'Poder Legislativo', 'https://www.doresopolis.mg.leg.br/', 'doresopolis.mg.leg.br', 'CD', 'assets/logos/camara.png', 'camara', 1),
+  ('Santa Casa de Misericórdia — Piumhi', 'Saúde', 'https://www.santacasapiumhi.com.br/', 'santacasapiumhi.com.br', 'SC', 'assets/logos/santacasa.png', 'santa', 2),
+  ('Prefeitura Municipal de Doresópolis', 'Poder Executivo', 'https://www.doresopolis.mg.gov.br/', 'Doresópolis · Um Novo Tempo', 'PD', 'assets/logos/prefeitura.png', 'pref', 3)
 on conflict do nothing;
 
 insert into public.services (title, description, tags, icon, sort) values
