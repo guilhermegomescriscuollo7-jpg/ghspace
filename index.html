@@ -253,6 +253,33 @@
   .wa{background:#25d366 !important}
   .wa:hover{filter:brightness(1.05)}
 
+  /* ---------- LEAD FORM ---------- */
+  .lead-form{display:flex;flex-direction:column;gap:12px;margin-top:26px;max-width:440px}
+  .lf-row{display:flex;gap:12px}
+  .lf-in{width:100%;background:var(--surface-2);border:1px solid var(--border);color:var(--text);
+    border-radius:12px;padding:12px 14px;font:inherit;font-size:.95rem;
+    transition:border-color .2s,box-shadow .2s}
+  .lf-in::placeholder{color:var(--text-dim)}
+  .lf-in:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  select.lf-in{cursor:pointer;appearance:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2398a2b2' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 12px center;padding-right:38px}
+  textarea.lf-in{resize:vertical;min-height:78px}
+  .lf-hp{position:absolute!important;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
+  .lf-submit{align-self:flex-start;padding:12px 26px;font-size:.95rem;margin-top:2px;border:none}
+  .lf-submit:disabled{opacity:.6;cursor:progress}
+  .lf-msg{font-size:.88rem;min-height:1.1em;margin:0;color:var(--text-dim)}
+
+  /* ---------- TESTIMONIALS ---------- */
+  .tcards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .tcard{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px;display:flex;flex-direction:column;gap:12px}
+  .tcard .stars{color:var(--accent);letter-spacing:3px;font-size:.95rem}
+  .tcard blockquote{margin:0;font-size:1.02rem;line-height:1.6}
+  .tcard .who{font-weight:700;margin-top:auto}
+  .tcard .role{color:var(--text-dim);font-size:.86rem}
+  @media (max-width:900px){.tcards{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.tcards{grid-template-columns:1fr}.lf-row{flex-direction:column}}
+
   /* ---------- FOOTER ---------- */
   footer{border-top:1px solid var(--border-2);padding:48px 0 60px;background:var(--bg-2)}
   .foot-inner{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
@@ -582,6 +609,17 @@
   </div>
 </section>
 
+<!-- ===== TESTIMONIALS (dinâmico; oculto sem dados) ===== -->
+<section class="section" id="depoimentos" hidden>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Depoimentos</span>
+      <h2>Quem confia na GH Space.</h2>
+    </div>
+    <div class="tcards" id="tCards"></div>
+  </div>
+</section>
+
 <!-- ===== PROCESS ===== -->
 <section class="section" id="processo">
   <div class="wrap">
@@ -607,6 +645,25 @@
         <h2>Vamos tirar a sua ideia do papel?</h2>
         <p>Precisa de um site, um sistema ou de deixar seus computadores em dia? Fale com a GH Space — respondemos rápido.</p>
         <p style="color:var(--text-dim)">Atendemos Doresópolis, Piumhi e região — presencial e remoto.</p>
+        <form class="lead-form" id="leadForm" novalidate>
+          <div class="lf-row">
+            <input class="lf-in" name="name" required placeholder="Seu nome" autocomplete="name" maxlength="120">
+            <input class="lf-in" name="phone" placeholder="WhatsApp / Telefone" inputmode="tel" autocomplete="tel" maxlength="40">
+          </div>
+          <input class="lf-in" name="email" type="email" placeholder="E-mail (opcional)" autocomplete="email" maxlength="160">
+          <select class="lf-in" name="service" aria-label="Serviço desejado">
+            <option value="">Qual serviço você precisa?</option>
+            <option>Criação de site</option>
+            <option>Sistema sob medida</option>
+            <option>Suporte / Infraestrutura</option>
+            <option>Manutenção de PC/Notebook</option>
+            <option>Outro</option>
+          </select>
+          <textarea class="lf-in" name="message" rows="3" placeholder="Conte o que você precisa…" maxlength="3000"></textarea>
+          <input type="text" name="company" class="lf-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button class="btn lf-submit" type="submit">Enviar pedido</button>
+          <p class="lf-msg" id="lfMsg" role="status" aria-live="polite"></p>
+        </form>
       </div>
       <div class="contact-list">
         <a class="c-item" href="https://wa.me/5537988455469" target="_blank" rel="noopener">
@@ -708,6 +765,162 @@
     addEventListener('resize',onScroll,{passive:true});
     render();
   }
+</script>
+
+<!-- ============================================================
+     CONFIGURAÇÃO DO SUPABASE
+     Preencha as 2 linhas abaixo com os dados do seu projeto
+     (Supabase > Project Settings > API). A "anon key" é pública
+     e segura de expor — o acesso é protegido por RLS no banco.
+     ============================================================ -->
+<script>
+  window.GH_SUPABASE = {
+    url: "",       // ex.: "https://xxxxxxxx.supabase.co"
+    anonKey: ""    // ex.: "eyJhbGciOi..."
+  };
+</script>
+
+<!-- Integração: formulário de leads + conteúdo dinâmico -->
+<script type="module">
+  const CFG = window.GH_SUPABASE || {};
+  const WA = "5537988455469";
+  let _client = null, _tried = false;
+
+  async function sb(){
+    if(_client || _tried) return _client;
+    _tried = true;
+    if(!CFG.url || !CFG.anonKey) return null;
+    try{
+      const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2");
+      _client = createClient(CFG.url, CFG.anonKey, { auth:{ persistSession:false } });
+    }catch(e){ console.warn("Supabase indisponível — usando fallback.", e); _client = null; }
+    return _client;
+  }
+
+  /* ---------- Formulário de contato / orçamento ---------- */
+  const form = document.getElementById("leadForm");
+  const msgEl = document.getElementById("lfMsg");
+  const setMsg = (t, ok=true)=>{ if(msgEl){ msgEl.textContent=t; msgEl.style.color = ok ? "var(--text-dim)" : "#e5484d"; } };
+
+  form?.addEventListener("submit", async (e)=>{
+    e.preventDefault();
+    const fd = new FormData(form);
+    if((fd.get("company")||"").trim()) return; // honeypot -> provável bot
+    const name = (fd.get("name")||"").trim();
+    if(name.length < 2){ setMsg("Por favor, informe seu nome.", false); return; }
+    const lead = {
+      name,
+      phone:  (fd.get("phone")||"").trim()   || null,
+      email:  (fd.get("email")||"").trim()   || null,
+      service:(fd.get("service")||"").trim() || null,
+      message:(fd.get("message")||"").trim() || null,
+      source: "site"
+    };
+    const btn = form.querySelector(".lf-submit");
+    btn.disabled = true; setMsg("Enviando…");
+    try{
+      const client = await sb();
+      if(client){
+        const { error } = await client.from("leads").insert(lead);
+        if(error) throw error;
+        setMsg("Pedido enviado! Em breve entraremos em contato. ✅");
+        form.reset();
+      }else{
+        openWhats(lead);
+      }
+    }catch(err){
+      console.warn(err);
+      openWhats(lead); // não perde o lead: cai para o WhatsApp
+    }finally{
+      btn.disabled = false;
+    }
+  });
+
+  function openWhats(lead){
+    const txt = encodeURIComponent(
+      "Olá! Vim pelo site da GH Space." +
+      "\nNome: " + lead.name +
+      (lead.phone   ? "\nTelefone: " + lead.phone : "") +
+      (lead.email   ? "\nE-mail: "   + lead.email : "") +
+      (lead.service ? "\nServiço: "  + lead.service : "") +
+      (lead.message ? "\nMensagem: " + lead.message : "")
+    );
+    setMsg("Abrindo o WhatsApp para concluir seu pedido…");
+    window.open("https://wa.me/" + WA + "?text=" + txt, "_blank", "noopener");
+  }
+
+  /* ---------- Conteúdo dinâmico (opcional, se o banco tiver dados) ---------- */
+  const esc = (s)=> String(s??"").replace(/[&<>"']/g, c=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+  const arrowSVG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg>';
+  const ICONS = {
+    site:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18M8 21h8M12 18v3"/></svg>',
+    code:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6l-5 6 5 6M16 6l5 6-5 6M13 4l-2 16"/></svg>',
+    support:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><circle cx="12" cy="10" r="3"/></svg>',
+    wrench:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4l-6 6a2 2 0 0 0 2.8 2.8l6-6a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.2-.4-.4-2.2z"/></svg>'
+  };
+  const ACCENTS = { camara:"#1c7a45", santa:"#2f6f9e", pref:"#2fa15f" };
+
+  function renderProjects(rows){
+    const grid = document.querySelector("#projetos .proj-grid");
+    if(!grid || !rows.length) return;
+    grid.innerHTML = rows.map(p=>{
+      const base = ACCENTS[p.accent] || (String(p.accent||"").startsWith("#") ? p.accent : ACCENTS.pref);
+      const bg = "linear-gradient(160deg," + base + " 0%, rgba(0,0,0,.55) 130%)";
+      return '<a class="proj reveal in" href="'+esc(p.url||"#")+'" target="_blank" rel="noopener">'
+        + '<div class="bg" style="background:'+bg+'"></div>'
+        + '<div class="badge">'+esc(p.badge||"")+'</div>'
+        + '<div class="content"><div class="kind">'+esc(p.kind||"")+'</div>'
+        + '<h3>'+esc(p.name)+'</h3><div class="site">'+esc(p.site_label||"")+'</div>'
+        + '<span class="visit">Visitar site '+arrowSVG+'</span></div></a>';
+    }).join("");
+  }
+
+  function renderServices(rows){
+    const grid = document.querySelector("#servicos .cards");
+    if(!grid || !rows.length) return;
+    grid.innerHTML = rows.map(s=>{
+      const tags = (s.tags||[]).map(t=>'<span class="tag">'+esc(t)+'</span>').join("");
+      const price = s.price_from!=null ? '<div class="tag" style="border-color:var(--accent);color:var(--accent)">'+esc(s.price_label||"a partir de")+' R$ '+esc(s.price_from)+'</div>' : "";
+      return '<div class="card reveal in"><div class="ico">'+(ICONS[s.icon]||ICONS.wrench)+'</div>'
+        + '<h3>'+esc(s.title)+'</h3><p>'+esc(s.description||"")+'</p>'
+        + '<div class="tags">'+tags+price+'</div></div>';
+    }).join("");
+  }
+
+  function renderTestimonials(rows){
+    const wrap = document.getElementById("tCards");
+    const sec = document.getElementById("depoimentos");
+    if(!wrap || !sec || !rows.length) return;
+    wrap.innerHTML = rows.map(t=>{
+      const stars = "★".repeat(t.rating||5) + "☆".repeat(Math.max(0,5-(t.rating||5)));
+      return '<div class="tcard reveal in"><div class="stars">'+stars+'</div>'
+        + '<blockquote>“'+esc(t.quote)+'”</blockquote>'
+        + '<div class="who">'+esc(t.author)+'</div>'
+        + (t.role ? '<div class="role">'+esc(t.role)+'</div>' : "")+'</div>';
+    }).join("");
+    sec.hidden = false;
+  }
+
+  (async ()=>{
+    const client = await sb();
+    if(!client) return; // sem banco configurado -> mantém o conteúdo estático
+    const load = async (table, filter)=>{
+      try{
+        let q = client.from(table).select("*");
+        for(const [k,v] of Object.entries(filter)) q = q.eq(k,v);
+        const { data, error } = await q.order("sort", { ascending:true });
+        if(error) throw error; return data||[];
+      }catch(e){ console.warn("Falha ao carregar "+table, e); return []; }
+    };
+    const [projects, services, testimonials] = await Promise.all([
+      load("projects", { published:true }),
+      load("services", { active:true }),
+      load("testimonials", { approved:true })
+    ]);
+    if(projects.length)     renderProjects(projects);
+    if(services.length)     renderServices(services);
+    if(testimonials.length) renderTestimonials(testimonials);
+  })();
 </script>
 </body>
 </html>
