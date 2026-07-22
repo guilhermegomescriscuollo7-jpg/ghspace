@@ -382,8 +382,42 @@
   /* ajustes específicos da página de contato */
   nav#nav{transform:none;background:var(--nav-bg);backdrop-filter:blur(20px) saturate(1.6);-webkit-backdrop-filter:blur(20px) saturate(1.6);border-bottom:1px solid var(--border-2)}
   .contact-page{padding-top:132px}
+  .contact-card{align-items:start}
   .back-link{display:inline-flex;align-items:center;gap:7px;color:var(--text-dim);font-size:.9rem;margin-bottom:22px;transition:color .2s}
   .back-link:hover{color:var(--accent)}
+
+  /* formulário aprimorado */
+  .lead-form{max-width:none;gap:16px}
+  .lead-form[hidden]{display:none}
+  .lf-field{display:flex;flex-direction:column;gap:6px}
+  .lead-form label{font-size:.82rem;font-weight:600;color:var(--text);letter-spacing:.01em}
+  .lead-form .req{color:var(--accent)}
+  .lead-form .opt{color:var(--text-dim);font-weight:400}
+  .lf-grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .lf-grid-addr{display:grid;grid-template-columns:2fr 1fr;gap:12px}
+  .lf-fieldset{border:1px solid var(--border);border-radius:16px;padding:16px 18px 18px;display:flex;flex-direction:column;gap:14px;background:var(--surface-2)}
+  .lf-fieldset legend{font-size:.82rem;font-weight:700;color:var(--text);padding:0 8px}
+  .lf-choices{display:flex;gap:10px;flex-wrap:wrap}
+  .chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:980px;padding:9px 15px;font-size:.9rem;font-weight:500;cursor:pointer;user-select:none;transition:border-color .2s,background .2s,color .2s}
+  .chip input{accent-color:var(--accent);margin:0}
+  .chip:hover{border-color:var(--accent)}
+  .chip:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+  .lf-consent{display:flex;gap:11px;align-items:flex-start;font-size:.9rem;color:var(--text-dim);cursor:pointer;font-weight:400}
+  .lf-consent input{margin-top:2px;width:17px;height:17px;accent-color:var(--accent);flex-shrink:0;cursor:pointer}
+  .lf-err{font-size:.8rem;color:#e5484d;min-height:0;display:none}
+  .lf-err.on{display:block}
+  .lf-in.invalid{border-color:#e5484d;box-shadow:0 0 0 3px rgba(229,72,77,.14)}
+  .lf-submit{display:inline-flex;align-items:center;justify-content:center;gap:9px;align-self:stretch}
+  .lf-spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.45);border-top-color:#fff;border-radius:50%;display:none;animation:lf-spin .7s linear infinite}
+  .lf-submit.loading .lf-spinner{display:inline-block}
+  @keyframes lf-spin{to{transform:rotate(360deg)}}
+  .lf-success{display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;padding:24px 8px;animation:lf-pop .5s cubic-bezier(.16,1,.3,1)}
+  .lf-success[hidden]{display:none}
+  @keyframes lf-pop{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  .lf-success-ico{width:66px;height:66px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center}
+  .lf-success h3{font-size:1.5rem;font-weight:800;letter-spacing:-.02em}
+  .lf-success p{color:var(--text-dim);max-width:32ch}
+  @media (max-width:560px){.lf-grid2{grid-template-columns:1fr}.lf-grid-addr{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -436,24 +470,87 @@
         <p>Precisa de um site, um sistema ou de deixar seus computadores em dia? Preencha os dados abaixo — a GH Space responde rápido.</p>
         <p style="color:var(--text-dim)">Atendemos Doresópolis e região — presencial e remoto.</p>
         <form class="lead-form" id="leadForm" novalidate>
-          <div class="lf-row">
-            <input class="lf-in" name="name" required placeholder="Seu nome" autocomplete="name" maxlength="120">
-            <input class="lf-in" name="phone" placeholder="WhatsApp / Telefone" inputmode="tel" autocomplete="tel" maxlength="40">
+          <div class="lf-grid2">
+            <div class="lf-field">
+              <label for="f-name">Nome completo <span class="req">*</span></label>
+              <input id="f-name" class="lf-in" name="name" required placeholder="Seu nome" autocomplete="name" maxlength="120">
+              <span class="lf-err" data-for="name"></span>
+            </div>
+            <div class="lf-field">
+              <label for="f-phone">WhatsApp / Telefone <span class="req">*</span></label>
+              <input id="f-phone" class="lf-in" name="phone" required placeholder="(37) 99999-9999" inputmode="tel" autocomplete="tel" maxlength="16">
+              <span class="lf-err" data-for="phone"></span>
+            </div>
           </div>
-          <input class="lf-in" name="email" type="email" placeholder="E-mail (opcional)" autocomplete="email" maxlength="160">
-          <select class="lf-in" name="service" aria-label="Serviço desejado">
-            <option value="">Qual serviço você precisa?</option>
-            <option>Criação de site</option>
-            <option>Sistema sob medida</option>
-            <option>Suporte / Infraestrutura</option>
-            <option>Manutenção de PC/Notebook</option>
-            <option>Outro</option>
-          </select>
-          <textarea class="lf-in" name="message" rows="4" placeholder="Conte o que você precisa…" maxlength="3000"></textarea>
+          <div class="lf-grid2">
+            <div class="lf-field">
+              <label for="f-email">E-mail</label>
+              <input id="f-email" class="lf-in" name="email" type="email" placeholder="voce@email.com" autocomplete="email" maxlength="160">
+              <span class="lf-err" data-for="email"></span>
+            </div>
+            <div class="lf-field">
+              <label for="f-service">Serviço desejado <span class="req">*</span></label>
+              <select id="f-service" class="lf-in" name="service" required>
+                <option value="">Selecione…</option>
+                <option>Criação de site</option>
+                <option>Sistema sob medida</option>
+                <option>Suporte / Infraestrutura</option>
+                <option>Manutenção de PC/Notebook</option>
+                <option>Outro</option>
+              </select>
+              <span class="lf-err" data-for="service"></span>
+            </div>
+          </div>
+          <div class="lf-field">
+            <label>Como prefere ser contatado?</label>
+            <div class="lf-choices">
+              <label class="chip"><input type="radio" name="prefer_contact" value="WhatsApp" checked> WhatsApp</label>
+              <label class="chip"><input type="radio" name="prefer_contact" value="Ligação"> Ligação</label>
+              <label class="chip"><input type="radio" name="prefer_contact" value="E-mail"> E-mail</label>
+            </div>
+          </div>
+          <fieldset class="lf-fieldset">
+            <legend>Endereço para atendimento <span class="opt">(opcional)</span></legend>
+            <div class="lf-grid-addr">
+              <div class="lf-field">
+                <label for="f-street">Rua</label>
+                <input id="f-street" class="lf-in" name="street" placeholder="Nome da rua" autocomplete="address-line1" maxlength="160">
+              </div>
+              <div class="lf-field">
+                <label for="f-number">Número</label>
+                <input id="f-number" class="lf-in" name="addr_number" placeholder="Nº" inputmode="numeric" maxlength="12">
+              </div>
+              <div class="lf-field">
+                <label for="f-district">Bairro</label>
+                <input id="f-district" class="lf-in" name="district" placeholder="Bairro" maxlength="120">
+              </div>
+              <div class="lf-field">
+                <label for="f-city">Cidade</label>
+                <input id="f-city" class="lf-in" name="city" placeholder="Cidade" autocomplete="address-level2" maxlength="120" value="Doresópolis">
+              </div>
+            </div>
+          </fieldset>
+          <div class="lf-field">
+            <label for="f-message">Mensagem</label>
+            <textarea id="f-message" class="lf-in" name="message" rows="4" placeholder="Conte o que você precisa…" maxlength="3000"></textarea>
+          </div>
+          <div class="lf-field">
+            <label class="lf-consent">
+              <input type="checkbox" name="consent" required>
+              <span>Concordo em ser contatado pela GH Space e com o uso dos meus dados para este atendimento. <span class="req">*</span></span>
+            </label>
+            <span class="lf-err" data-for="consent"></span>
+          </div>
           <input type="text" name="company" class="lf-hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <button class="btn lf-submit" type="submit">Enviar pedido</button>
+          <button class="btn lf-submit" type="submit"><span class="lf-btn-label">Enviar pedido</span><span class="lf-spinner"></span></button>
           <p class="lf-msg" id="lfMsg" role="status" aria-live="polite"></p>
         </form>
+        <div class="lf-success" id="lfSuccess" hidden>
+          <div class="lf-success-ico"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <h3>Pedido enviado!</h3>
+          <p>Recebemos a sua mensagem. Em breve a GH Space entra em contato.</p>
+          <button class="btn ghost" id="lfAgain" type="button">Enviar outro pedido</button>
+        </div>
       </div>
       <div class="contact-list">
         <a class="c-item" href="https://wa.me/5537988455469" target="_blank" rel="noopener">
@@ -511,36 +608,106 @@
   }
   const form = document.getElementById("leadForm");
   const msgEl = document.getElementById("lfMsg");
-  const setMsg = (t, ok)=>{ if(msgEl){ msgEl.textContent=t; msgEl.style.color = ok===false ? "#e5484d" : "var(--text-dim)"; } };
+  const successEl = document.getElementById("lfSuccess");
+  const setMsg = (t, ok)=>{ if(msgEl){ msgEl.textContent=t||""; msgEl.style.color = ok===false ? "#e5484d" : "var(--text-dim)"; } };
+
+  // máscara de telefone: (37) 99999-9999
+  const phoneEl = document.getElementById("f-phone");
+  phoneEl && phoneEl.addEventListener("input", ()=>{
+    let d = phoneEl.value.replace(/\D/g, "").slice(0, 11);
+    let out = d;
+    if(d.length > 6){ out = "(" + d.slice(0,2) + ") " + d.slice(2, d.length-4) + "-" + d.slice(d.length-4); }
+    else if(d.length > 2){ out = "(" + d.slice(0,2) + ") " + d.slice(2); }
+    else if(d.length > 0){ out = "(" + d; }
+    phoneEl.value = out;
+  });
+
+  // erros por campo
+  const showErr = (name, msg)=>{
+    const el = form.querySelector('.lf-err[data-for="'+name+'"]');
+    const field = form.querySelector('[name="'+name+'"]');
+    if(el){ el.textContent = msg||""; el.classList.toggle("on", !!msg); }
+    if(field && field.classList) field.classList.toggle("invalid", !!msg);
+  };
+  ["name","phone","email","service","consent"].forEach(n=>{
+    const f = form.querySelector('[name="'+n+'"]');
+    f && f.addEventListener("input", ()=> showErr(n, ""));
+    f && f.addEventListener("change", ()=> showErr(n, ""));
+  });
+
+  function validate(fd){
+    let firstBad = null;
+    const bad = (n, m)=>{ showErr(n, m); if(!firstBad) firstBad = form.querySelector('[name="'+n+'"]'); };
+    if((fd.get("name")||"").trim().length < 2) bad("name", "Informe o seu nome completo.");
+    const digits = (fd.get("phone")||"").replace(/\D/g, "");
+    if(digits.length < 10) bad("phone", "Informe um telefone válido com DDD.");
+    const email = (fd.get("email")||"").trim();
+    if(email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) bad("email", "E-mail inválido.");
+    if(!(fd.get("service")||"").trim()) bad("service", "Escolha um serviço.");
+    if(!fd.get("consent")) bad("consent", "É preciso aceitar para enviarmos o contato.");
+    return firstBad;
+  }
+
   form && form.addEventListener("submit", async (e)=>{
     e.preventDefault();
     const fd = new FormData(form);
-    if((fd.get("company")||"").trim()) return;
-    const name = (fd.get("name")||"").trim();
-    if(name.length < 2){ setMsg("Por favor, informe seu nome.", false); return; }
-    const lead = { name,
+    if((fd.get("company")||"").trim()) return; // honeypot
+    const firstBad = validate(fd);
+    if(firstBad){ setMsg(""); firstBad.focus(); return; }
+
+    const lead = {
+      name:(fd.get("name")||"").trim(),
       phone:(fd.get("phone")||"").trim()||null,
       email:(fd.get("email")||"").trim()||null,
       service:(fd.get("service")||"").trim()||null,
-      message:(fd.get("message")||"").trim()||null, source:"contato" };
-    const btn = form.querySelector(".lf-submit"); btn.disabled = true; setMsg("Enviando...");
+      prefer_contact:(fd.get("prefer_contact")||"").trim()||null,
+      street:(fd.get("street")||"").trim()||null,
+      addr_number:(fd.get("addr_number")||"").trim()||null,
+      district:(fd.get("district")||"").trim()||null,
+      city:(fd.get("city")||"").trim()||null,
+      message:(fd.get("message")||"").trim()||null,
+      consent:true,
+      source:"contato"
+    };
+    const btn = form.querySelector(".lf-submit");
+    btn.disabled = true; btn.classList.add("loading"); setMsg("Enviando…");
     try{
       const c = await sb();
-      if(c){ const r = await c.from("leads").insert(lead); if(r.error) throw r.error;
-        setMsg("Pedido enviado! Em breve entraremos em contato."); form.reset(); }
-      else { openWhats(lead); }
-    }catch(err){ console.warn(err); openWhats(lead); }
-    finally{ btn.disabled = false; }
+      if(c){ const r = await c.from("leads").insert(lead); if(r.error) throw r.error; showSuccess(); }
+      else { openWhats(lead); setMsg(""); }
+    }catch(err){ console.warn(err); openWhats(lead); setMsg(""); }
+    finally{ btn.disabled = false; btn.classList.remove("loading"); }
   });
+
+  function showSuccess(){
+    if(form) form.hidden = true;
+    if(successEl) successEl.hidden = false;
+  }
+  const againBtn = document.getElementById("lfAgain");
+  againBtn && againBtn.addEventListener("click", ()=>{
+    form.reset(); form.hidden = false; if(successEl) successEl.hidden = true; setMsg("");
+    const nameEl = document.getElementById("f-name"); nameEl && nameEl.focus();
+  });
+
+  function fullAddress(l){
+    const parts = [];
+    if(l.street) parts.push(l.street + (l.addr_number ? ", " + l.addr_number : ""));
+    if(l.district) parts.push(l.district);
+    if(l.city) parts.push(l.city);
+    return parts.join(" - ");
+  }
   function openWhats(lead){
+    const addr = fullAddress(lead);
     const txt = encodeURIComponent("Ola! Vim pelo site da GH Space." +
       "\nNome: " + lead.name +
       (lead.phone ? "\nTelefone: " + lead.phone : "") +
       (lead.email ? "\nE-mail: " + lead.email : "") +
       (lead.service ? "\nServico: " + lead.service : "") +
+      (lead.prefer_contact ? "\nContato por: " + lead.prefer_contact : "") +
+      (addr ? "\nEndereco: " + addr : "") +
       (lead.message ? "\nMensagem: " + lead.message : ""));
-    setMsg("Abrindo o WhatsApp para concluir seu pedido...");
     window.open("https://wa.me/" + WA + "?text=" + txt, "_blank", "noopener");
+    showSuccess();
   }
   const tb = document.getElementById("themeBtn");
   tb && tb.addEventListener("click", ()=>{

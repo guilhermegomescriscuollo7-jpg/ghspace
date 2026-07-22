@@ -11,15 +11,29 @@ create extension if not exists "pgcrypto";
 create table if not exists public.leads (
   id          uuid primary key default gen_random_uuid(),
   created_at  timestamptz not null default now(),
-  name        text not null check (char_length(name) between 2 and 120),
-  phone       text check (char_length(phone) <= 40),
-  email       text check (char_length(email) <= 160),
-  service     text check (char_length(service) <= 120),
-  message     text check (char_length(message) <= 3000),
-  status      text not null default 'novo'
-              check (status in ('novo','em_contato','concluido','descartado')),
-  source      text default 'site'
+  name           text not null check (char_length(name) between 2 and 120),
+  phone          text check (char_length(phone) <= 40),
+  email          text check (char_length(email) <= 160),
+  service        text check (char_length(service) <= 120),
+  prefer_contact text check (char_length(prefer_contact) <= 40),
+  street         text check (char_length(street) <= 160),
+  addr_number    text check (char_length(addr_number) <= 20),
+  district       text check (char_length(district) <= 120),
+  city           text check (char_length(city) <= 120),
+  message        text check (char_length(message) <= 3000),
+  consent        boolean not null default false,
+  status         text not null default 'novo'
+                 check (status in ('novo','em_contato','concluido','descartado')),
+  source         text default 'site'
 );
+
+-- Se a tabela já existir de uma instalação anterior, garante as novas colunas:
+alter table public.leads add column if not exists prefer_contact text;
+alter table public.leads add column if not exists street         text;
+alter table public.leads add column if not exists addr_number    text;
+alter table public.leads add column if not exists district       text;
+alter table public.leads add column if not exists city           text;
+alter table public.leads add column if not exists consent        boolean not null default false;
 create index if not exists leads_created_idx on public.leads (created_at desc);
 
 -- ------------------------------------------------------------
