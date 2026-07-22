@@ -123,7 +123,8 @@ create policy services_read_public on public.services
 insert into public.projects (name, kind, url, site_label, badge, logo_url, accent, sort) values
   ('Câmara Municipal de Doresópolis', 'Poder Legislativo', 'https://www.doresopolis.mg.leg.br/', 'doresopolis.mg.leg.br', 'CD', 'assets/logos/camara.png', 'camara', 1),
   ('Santa Casa de Misericórdia — Piumhi', 'Saúde', 'https://www.santacasapiumhi.com.br/', 'santacasapiumhi.com.br', 'SC', 'assets/logos/santacasa.png', 'santa', 2),
-  ('Prefeitura Municipal de Doresópolis', 'Poder Executivo', 'https://www.doresopolis.mg.gov.br/', 'Doresópolis · Um Novo Tempo', 'PD', 'assets/logos/prefeitura.png', 'pref', 3)
+  ('Prefeitura Municipal de Doresópolis', 'Poder Executivo', 'https://www.doresopolis.mg.gov.br/', 'Doresópolis · Um Novo Tempo', 'PD', 'assets/logos/prefeitura.png', 'pref', 3),
+  ('UaiPede', 'Plataforma · Delivery', 'https://uaipede.online/', 'uaipede.online', 'UP', 'assets/logos/uaipede.png', 'uaipede', 4)
 on conflict do nothing;
 
 insert into public.services (title, description, tags, icon, sort) values
