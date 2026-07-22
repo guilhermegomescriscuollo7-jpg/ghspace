@@ -265,6 +265,30 @@
   .wa{background:#25d366 !important}
   .wa:hover{filter:brightness(1.05)}
 
+  /* ---------- ABOUT ---------- */
+  .about{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+  .about-copy p{color:var(--text-dim);margin-top:16px;font-size:1.05rem}
+  .about-list{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .about-item{display:flex;gap:13px;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px;transition:border-color .3s,transform .3s}
+  .about-item:hover{border-color:var(--accent);transform:translateY(-3px)}
+  .about-item .ai-ico{color:var(--accent);flex-shrink:0;margin-top:1px}
+  .about-item h4{font-size:1rem;font-weight:700;margin-bottom:3px}
+  .about-item p{color:var(--text-dim);font-size:.9rem;margin:0}
+  @media (max-width:900px){.about{grid-template-columns:1fr;gap:32px}}
+  @media (max-width:560px){.about-list{grid-template-columns:1fr}}
+
+  /* ---------- FAQ ---------- */
+  .faq-list{display:flex;flex-direction:column;gap:12px;max-width:840px}
+  .faq-item{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:border-color .3s}
+  .faq-item[open]{border-color:var(--accent)}
+  .faq-item summary{list-style:none;cursor:pointer;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;font-weight:600;font-size:1.05rem}
+  .faq-item summary::-webkit-details-marker{display:none}
+  .faq-item summary .chev{transition:transform .3s;color:var(--accent);flex-shrink:0}
+  .faq-item[open] summary .chev{transform:rotate(180deg)}
+  .faq-item summary:focus-visible{outline:2px solid var(--accent);outline-offset:-3px;border-radius:16px}
+  .faq-a{padding:0 24px 22px;color:var(--text-dim);max-width:72ch}
+  .faq-a a{color:var(--accent)}
+
   /* ---------- LEAD FORM ---------- */
   .lead-form{display:flex;flex-direction:column;gap:12px;margin-top:26px;max-width:440px}
   .lf-row{display:flex;gap:12px}
@@ -392,9 +416,10 @@
       <span>GH Space<span style="color:var(--text-dim);font-weight:500"> Tech</span></span>
     </a>
     <div class="nav-links">
+      <a href="#sobre">Sobre</a>
       <a href="#servicos">Serviços</a>
       <a href="#projetos">Projetos</a>
-      <a href="#processo">Como funciona</a>
+      <a href="#faq">Dúvidas</a>
       <a href="contato.html">Contato</a>
     </div>
     <button class="theme-btn" id="themeBtn" aria-label="Alternar tema">
@@ -446,6 +471,38 @@
     <div class="stat reveal d1"><div class="num metal">100%</div><div class="lbl">Sites entregues no ar</div></div>
     <div class="stat reveal d2"><div class="num metal">24/7</div><div class="lbl">Suporte quando precisar</div></div>
     <div class="stat reveal d3"><div class="num metal" style="font-size:1.7rem">Doresópolis</div><div class="lbl">Atendimento local e remoto</div></div>
+  </div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section class="section" id="sobre">
+  <div class="wrap">
+    <div class="about">
+      <div class="about-copy reveal">
+        <span class="eyebrow">Sobre a GH Space</span>
+        <h2 style="font-size:clamp(2rem,5vw,3.3rem);font-weight:800;letter-spacing:-.03em;line-height:1.05;margin:16px 0 4px;text-wrap:balance">Tecnologia de perto, feita para a sua região.</h2>
+        <p>A GH Space nasceu para aproximar tecnologia de qualidade de quem é daqui. Reunimos criação de sites, desenvolvimento de sistemas e suporte de informática em um só lugar — do portal de um órgão público à formatação do seu notebook.</p>
+        <p>Trabalhamos com atendimento próximo e linguagem simples, presencial em Doresópolis e região ou remoto quando for mais prático. Sem letras miúdas: você sabe o que será feito, o prazo e o preço antes de começar.</p>
+      </div>
+      <div class="about-list reveal d1">
+        <div class="about-item">
+          <span class="ai-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+          <div><h4>Atendimento próximo</h4><p>Você fala direto com quem faz — respostas rápidas e sem robô.</p></div>
+        </div>
+        <div class="about-item">
+          <span class="ai-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/></svg></span>
+          <div><h4>Presencial e remoto</h4><p>Doresópolis e região no local; e à distância para todo o Brasil.</p></div>
+        </div>
+        <div class="about-item">
+          <span class="ai-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7.4L12 17l-6.3 4.4L8 14 2 9.4h7.6z"/></svg></span>
+          <div><h4>Do site à manutenção</h4><p>Uma empresa só para toda a parte digital do seu negócio.</p></div>
+        </div>
+        <div class="about-item">
+          <span class="ai-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 5-3.5 7.5-8.6 9-.3.1-.6.1-.8 0C6.5 19.5 3 17 3 12V6l9-3 9 3z"/></svg></span>
+          <div><h4>Orçamento sem compromisso</h4><p>Analisamos e passamos o valor antes — você decide com calma.</p></div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -593,6 +650,55 @@
   </div>
 </section>
 
+<!-- ===== FAQ ===== -->
+<section class="section" id="faq" style="background:var(--bg-2);border-top:1px solid var(--border-2);border-bottom:1px solid var(--border-2)">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Dúvidas frequentes</span>
+      <h2>Perguntas que a gente sempre ouve.</h2>
+      <p>Não achou o que procurava? Fale com a gente no WhatsApp — a resposta é rápida.</p>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item reveal">
+        <summary>Quanto custa um site ou sistema?
+          <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="faq-a">Cada projeto é único, então o valor depende do que você precisa. Fazemos um orçamento gratuito e sem compromisso depois de entender o seu objetivo — e você recebe o preço fechado antes de começar.</div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>Vocês atendem remotamente?
+          <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="faq-a">Sim. Atendemos presencialmente em Doresópolis e região e também de forma remota para todo o Brasil — criação de sites, sistemas e boa parte do suporte podem ser feitos à distância.</div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>Quanto tempo leva uma formatação ou manutenção?
+          <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="faq-a">Na maioria dos casos, a manutenção fica pronta no mesmo dia ou em até 48 horas, dependendo do serviço e das peças envolvidas. Avisamos o prazo assim que avaliamos a máquina.</div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>Meus arquivos são preservados na formatação?
+          <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="faq-a">Sempre que possível, fazemos o backup dos seus dados antes de formatar e combinamos isso com você antes de começar. Seus arquivos importantes são a nossa prioridade.</div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>Vocês dão garantia dos serviços?
+          <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="faq-a">Sim. Todo serviço tem garantia e continuamos disponíveis para suporte depois da entrega — se algo não ficou como o combinado, a gente resolve.</div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>Como faço para contratar?
+          <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div class="faq-a">É só chamar no <a href="https://wa.me/5537988455469" target="_blank" rel="noopener">WhatsApp</a> ou preencher o <a href="contato.html">formulário de contato</a>. Respondemos rápido e já damos os próximos passos.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
 <!-- ===== CTA BAND ===== -->
 <section class="section contact" id="contato">
   <div class="wrap">
@@ -693,6 +799,14 @@
     url: "",       // ex.: "https://xxxxxxxx.supabase.co"
     anonKey: ""    // ex.: "eyJhbGciOi..."
   };
+
+  // Depoimentos: adicione aqui os depoimentos REAIS dos seus clientes.
+  // A seção aparece sozinha quando houver pelo menos um item.
+  // (Se o Supabase estiver configurado, os depoimentos aprovados no banco também entram.)
+  window.GH_TESTIMONIALS = [
+    // { author: "Nome do cliente", role: "Empresa / cargo", rating: 5,
+    //   quote: "Escreva aqui o depoimento do cliente." },
+  ];
 </script>
 
 <!-- Integração: formulário de leads + conteúdo dinâmico -->
@@ -817,6 +931,11 @@
         + (t.role ? '<div class="role">'+esc(t.role)+'</div>' : "")+'</div>';
     }).join("");
     sec.hidden = false;
+  }
+
+  // Depoimentos definidos localmente (aparecem mesmo sem Supabase)
+  if(Array.isArray(window.GH_TESTIMONIALS) && window.GH_TESTIMONIALS.length){
+    renderTestimonials(window.GH_TESTIMONIALS);
   }
 
   (async ()=>{
