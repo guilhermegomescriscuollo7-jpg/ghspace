@@ -164,6 +164,26 @@
   .card.wide{grid-column:1 / -1}
 
   /* ---------- PORTFOLIO ---------- */
+  /* carrossel infinito de logos (direita -> esquerda) */
+  .marquee{position:relative;overflow:hidden;padding:8px 0;
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%);
+    mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%)}
+  .marquee-track{display:flex;align-items:center;gap:22px;width:max-content;
+    animation:mq-scroll 34s linear infinite;will-change:transform}
+  .marquee:hover .marquee-track,.marquee:focus-within .marquee-track{animation-play-state:paused}
+  @keyframes mq-scroll{from{transform:translateX(0)}to{transform:translateX(-33.3333%)}}
+  .mq-item{flex:0 0 auto;width:232px;height:116px;background:#fff;border:1px solid var(--border-2);
+    border-radius:16px;display:flex;align-items:center;justify-content:center;padding:18px 22px;
+    box-shadow:0 14px 32px -18px rgba(0,0,0,.6);
+    transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s}
+  .mq-item:hover{transform:translateY(-5px);box-shadow:0 22px 42px -18px rgba(0,0,0,.75)}
+  .mq-item:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  .mq-item img{max-width:100%;max-height:64px;width:auto;object-fit:contain;display:block}
+  @media (max-width:560px){.mq-item{width:184px;height:98px;padding:14px 16px}.mq-item img{max-height:52px}}
+  @media (prefers-reduced-motion:reduce){
+    .marquee-track{animation:none;flex-wrap:wrap;justify-content:center;width:100%}
+    .mq-dup{display:none}
+  }
   .proj-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
   .proj{
     --brand:var(--accent);--brand-soft:var(--accent-soft);
@@ -545,52 +565,35 @@
       <h2>Soluções digitais entregues para instituições da região.</h2>
       <p>Desenvolvemos e mantemos a presença online de instituições e empresas da região — de órgãos públicos e da saúde a plataformas digitais — com sites confiáveis, acessíveis e disponíveis 24 horas por dia.</p>
     </div>
-    <div class="proj-grid">
+    <div class="marquee reveal" aria-label="Clientes atendidos pela GH Space">
+      <div class="marquee-track" id="projTrack">
+        <a class="mq-item" href="https://www.doresopolis.mg.leg.br/" target="_blank" rel="noopener" title="Câmara Municipal de Doresópolis">
+          <img src="assets/logos/camara.png" alt="Câmara Municipal de Doresópolis" loading="lazy"></a>
+        <a class="mq-item" href="https://www.santacasapiumhi.com.br/" target="_blank" rel="noopener" title="Santa Casa de Misericórdia de Piumhi">
+          <img src="assets/logos/santacasa.png" alt="Santa Casa de Misericórdia de Piumhi" loading="lazy"></a>
+        <a class="mq-item" href="https://www.doresopolis.mg.gov.br/" target="_blank" rel="noopener" title="Prefeitura Municipal de Doresópolis">
+          <img src="assets/logos/prefeitura.png" alt="Prefeitura Municipal de Doresópolis" loading="lazy"></a>
+        <a class="mq-item" href="https://uaipede.online/" target="_blank" rel="noopener" title="UaiPede">
+          <img src="assets/logos/uaipede.png" alt="UaiPede" loading="lazy"></a>
 
-      <a class="proj camara reveal" href="https://www.doresopolis.mg.leg.br/" target="_blank" rel="noopener">
-        <div class="bg"></div>
-        <div class="logo-plate"><img src="assets/logos/camara.png" alt="Câmara Municipal de Doresópolis" loading="lazy"></div>
-        <div class="content">
-          <div class="kind">Poder Legislativo</div>
-          <h3>Câmara Municipal de Doresópolis</h3>
-          <div class="site">doresopolis.mg.leg.br</div>
-          <span class="visit">Visitar site <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></span>
-        </div>
-      </a>
+        <a class="mq-item mq-dup" href="https://www.doresopolis.mg.leg.br/" target="_blank" rel="noopener" aria-hidden="true" tabindex="-1">
+          <img src="assets/logos/camara.png" alt="" loading="lazy"></a>
+        <a class="mq-item mq-dup" href="https://www.santacasapiumhi.com.br/" target="_blank" rel="noopener" aria-hidden="true" tabindex="-1">
+          <img src="assets/logos/santacasa.png" alt="" loading="lazy"></a>
+        <a class="mq-item mq-dup" href="https://www.doresopolis.mg.gov.br/" target="_blank" rel="noopener" aria-hidden="true" tabindex="-1">
+          <img src="assets/logos/prefeitura.png" alt="" loading="lazy"></a>
+        <a class="mq-item mq-dup" href="https://uaipede.online/" target="_blank" rel="noopener" aria-hidden="true" tabindex="-1">
+          <img src="assets/logos/uaipede.png" alt="" loading="lazy"></a>
 
-      <a class="proj santa reveal d1" href="https://www.santacasapiumhi.com.br/" target="_blank" rel="noopener">
-        <div class="bg"></div>
-        <div class="logo-plate"><img src="assets/logos/santacasa.png" alt="Santa Casa de Misericórdia de Piumhi" loading="lazy"></div>
-        <div class="content">
-          <div class="kind">Saúde</div>
-          <h3>Santa Casa de Misericórdia — Piumhi</h3>
-          <div class="site">santacasapiumhi.com.br</div>
-          <span class="visit">Visitar site <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></span>
-        </div>
-      </a>
-
-      <a class="proj pref reveal d2" href="https://www.doresopolis.mg.gov.br/" target="_blank" rel="noopener">
-        <div class="bg"></div>
-        <div class="logo-plate"><img src="assets/logos/prefeitura.png" alt="Prefeitura Municipal de Doresópolis" loading="lazy"></div>
-        <div class="content">
-          <div class="kind">Poder Executivo</div>
-          <h3>Prefeitura Municipal de Doresópolis</h3>
-          <div class="site">Doresópolis · Um Novo Tempo</div>
-          <span class="visit">Visitar site <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></span>
-        </div>
-      </a>
-
-      <a class="proj uaipede reveal d3" href="https://uaipede.online/" target="_blank" rel="noopener">
-        <div class="bg"></div>
-        <div class="logo-plate"><img src="assets/logos/uaipede.png" alt="UaiPede" loading="lazy"></div>
-        <div class="content">
-          <div class="kind">Plataforma · Delivery</div>
-          <h3>UaiPede</h3>
-          <div class="site">uaipede.online</div>
-          <span class="visit">Visitar site <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg></span>
-        </div>
-      </a>
-
+        <a class="mq-item mq-dup" href="https://www.doresopolis.mg.leg.br/" target="_blank" rel="noopener" aria-hidden="true" tabindex="-1">
+          <img src="assets/logos/camara.png" alt="" loading="lazy"></a>
+        <a class="mq-item mq-dup" href="https://www.santacasapiumhi.com.br/" target="_blank" rel="noopener" aria-hidden="true" tabindex="-1">
+          <img src="assets/logos/santacasa.png" alt="" loading="lazy"></a>
+        <a class="mq-item mq-dup" href="https://www.doresopolis.mg.gov.br/" target="_blank" rel="noopener" aria-hidden="true" tabindex="-1">
+          <img src="assets/logos/prefeitura.png" alt="" loading="lazy"></a>
+        <a class="mq-item mq-dup" href="https://uaipede.online/" target="_blank" rel="noopener" aria-hidden="true" tabindex="-1">
+          <img src="assets/logos/uaipede.png" alt="" loading="lazy"></a>
+      </div>
     </div>
   </div>
 </section>
@@ -854,24 +857,21 @@
   const ACCENTS = { camara:"#1c7a45", santa:"#2f6f9e", pref:"#2fa15f", uaipede:"#e23744" };
 
   function renderProjects(rows){
-    const grid = document.querySelector("#projetos .proj-grid");
-    if(!grid || !rows.length) return;
-    const known = ["camara","santa","pref","uaipede"];
-    grid.innerHTML = rows.map(p=>{
-      const isKnown = known.includes(p.accent);
-      const cls = isKnown ? " " + p.accent : "";
-      const hex = (!isKnown && String(p.accent||"").startsWith("#")) ? p.accent : "";
-      const styleVar = hex ? ' style="--brand:'+esc(hex)+';--brand-soft:'+esc(hex)+'28"' : '';
-      const plate = p.logo_url
-        ? '<div class="logo-plate"><img src="'+esc(p.logo_url)+'" alt="'+esc(p.name)+'" loading="lazy"></div>'
-        : '<div class="badge">'+esc(p.badge||"")+'</div>';
-      return '<a class="proj reveal in'+cls+'"'+styleVar+' href="'+esc(p.url||"#")+'" target="_blank" rel="noopener">'
-        + '<div class="bg"></div>'
-        + plate
-        + '<div class="content"><div class="kind">'+esc(p.kind||"")+'</div>'
-        + '<h3>'+esc(p.name)+'</h3><div class="site">'+esc(p.site_label||"")+'</div>'
-        + '<span class="visit">Visitar site '+arrowSVG+'</span></div></a>';
-    }).join("");
+    const track = document.getElementById("projTrack");
+    if(!track || !rows.length) return;
+    const item = (p, dup)=>{
+      const logo = p.logo_url
+        ? '<img src="'+esc(p.logo_url)+'" alt="'+(dup ? "" : esc(p.name))+'" loading="lazy">'
+        : '<span style="font-weight:800;color:#12161d">'+esc(p.badge||p.name||"")+'</span>';
+      return '<a class="mq-item'+(dup ? " mq-dup" : "")+'" href="'+esc(p.url||"#")+'"'
+        + ' target="_blank" rel="noopener"'
+        + (dup ? ' aria-hidden="true" tabindex="-1"' : ' title="'+esc(p.name)+'"')
+        + '>'+logo+'</a>';
+    };
+    // 3 cópias para o loop ficar contínuo (a animação desloca 1/3 da faixa)
+    const one = rows.map(p=>item(p,false)).join("");
+    const dup = rows.map(p=>item(p,true)).join("");
+    track.innerHTML = one + dup + dup;
   }
 
   function renderServices(rows){
