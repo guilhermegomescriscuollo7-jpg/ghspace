@@ -328,36 +328,6 @@
   .reveal.in{opacity:1;transform:none}
   .reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}
 
-  /* ---------- SCROLL-DRIVEN SHOWCASE ---------- */
-  .showcase{position:relative;height:250vh}
-  .stage{position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
-  .stage .stage-bg{position:absolute;inset:0;z-index:0;background:radial-gradient(60% 55% at 50% 45%,var(--glow),transparent 70%);opacity:.7}
-  .stage .caption{position:absolute;top:11vh;left:0;right:0;text-align:center;padding:0 24px;z-index:6}
-  .stage .caption .eyebrow{display:block;margin-bottom:12px}
-  .stage .caption h2{font-size:clamp(1.7rem,4.6vw,3rem);font-weight:800;letter-spacing:-.03em;text-wrap:balance}
-  .stage .caption p{color:var(--text-dim);max-width:46ch;margin:12px auto 0;font-size:1.02rem}
-
-  /* laptop (CSS 3D) */
-  .laptop{perspective:1700px;width:min(560px,84vw);position:relative;z-index:2;margin-top:8vh}
-  .lp-wrap{transform-style:preserve-3d;transform:rotateX(8deg)}
-  .lp-screen{position:relative;width:100%;padding-bottom:63%;transform-origin:bottom center;
-    transform:rotateX(-90deg);will-change:transform}
-  .lp-panel{position:absolute;inset:0;border-radius:16px 16px 6px 6px;background:#0a0d13;
-    border:2px solid #313743;box-shadow:0 26px 70px -24px rgba(0,0,0,.7)}
-  .lp-cam{position:absolute;top:7px;left:50%;transform:translateX(-50%);width:6px;height:6px;border-radius:50%;background:#2a3444;z-index:3}
-  .lp-display{position:absolute;inset:9px;border-radius:9px;overflow:hidden;
-    background:radial-gradient(130% 100% at 25% 0,#1b2c47,#080d18);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;opacity:0;transition:opacity .3s}
-  .lp-display .mark{width:64px;height:64px;filter:drop-shadow(0 6px 16px rgba(0,0,0,.5))}
-  .lp-display .boot{font-size:.78rem;letter-spacing:.24em;text-transform:uppercase;color:#8fb4e8;font-weight:700}
-  .lp-display .bar{width:130px;height:4px;border-radius:3px;background:rgba(255,255,255,.14);overflow:hidden}
-  .lp-display .bar i{display:block;height:100%;width:40%;border-radius:3px;background:linear-gradient(90deg,#4da3ff,#8fd0ff);animation:load 1.8s ease-in-out infinite}
-  @keyframes load{0%{transform:translateX(-100%)}100%{transform:translateX(320%)}}
-  .lp-base{position:relative;height:22px;border-radius:5px 5px 16px 16px;
-    background:linear-gradient(#dfe4ec,#a9b2bf);box-shadow:0 30px 50px -22px rgba(0,0,0,.55);transform-origin:top center}
-  .lp-base::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:15%;height:6px;border-radius:0 0 9px 9px;background:#8f9aa9}
-  .lp-base::after{content:"";position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:26%;height:3px;border-radius:3px;background:rgba(0,0,0,.12)}
-
   /* desktop tower */
   .tower-scene{position:relative;z-index:2;perspective:1500px;width:min(380px,82vw);margin-top:6vh}
   .tower-case{position:relative;width:100%;padding-bottom:120%;transform-style:preserve-3d}
@@ -555,33 +525,6 @@
   </div>
 </section>
 
-<!-- ===== SHOWCASE: NOTEBOOK ===== -->
-<section class="showcase" id="laptopSec">
-  <div class="stage">
-    <div class="stage-bg"></div>
-    <div class="caption">
-      <span class="eyebrow">Notebooks</span>
-      <h2>Tudo para seu Notebook e PC</h2>
-      <p>Formatação, limpeza, troca de pasta térmica e upgrades.</p>
-    </div>
-    <div class="laptop">
-      <div class="lp-wrap">
-        <div class="lp-screen" id="lpScreen">
-          <div class="lp-panel">
-            <span class="lp-cam"></span>
-            <div class="lp-display" id="lpDisplay">
-              <svg class="mark" viewBox="0 0 120 120" aria-hidden="true"><use href="#ghmark"/></svg>
-              <span class="boot">GH Space Tech</span>
-              <span class="bar"><i></i></span>
-            </div>
-          </div>
-        </div>
-        <div class="lp-base"></div>
-      </div>
-    </div>
-  </div>
-</section>
-
 
 <!-- ===== PORTFOLIO ===== -->
 <section class="section" id="projetos" style="background:var(--bg-2);border-top:1px solid var(--border-2);border-bottom:1px solid var(--border-2)">
@@ -772,39 +715,6 @@
   document.querySelectorAll('.reveal').forEach(el=>{if(!el.classList.contains('in'))rev.observe(el)});
 
 
-  // ---- scroll-driven showcase (notebook opening) ----
-  const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
-  const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
-  function progress(el){
-    const r=el.getBoundingClientRect();
-    const total=el.offsetHeight-window.innerHeight;
-    return clamp((-r.top)/total,0,1);
-  }
-  const lapSec=document.getElementById('laptopSec');
-  const lpScreen=document.getElementById('lpScreen');
-  const lpDisplay=document.getElementById('lpDisplay');
-  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  function render(){
-    if(!lapSec) return;
-    // laptop: open the lid over the first 65% of the section
-    const pl=ease(clamp(progress(lapSec)/.65,0,1));
-    lpScreen.style.transform='rotateX('+(-90+pl*90).toFixed(2)+'deg)';
-    lpDisplay.style.opacity=clamp((pl-.35)/.4,0,1).toFixed(2);
-    raf=null;
-  }
-  let raf=null;
-  function onScroll(){ if(raf==null) raf=requestAnimationFrame(render); }
-
-  if(lapSec){
-    if(reduce){
-      lpScreen.style.transform='rotateX(0deg)';lpDisplay.style.opacity='1';
-    }else{
-      addEventListener('scroll',onScroll,{passive:true});
-      addEventListener('resize',onScroll,{passive:true});
-      render();
-    }
-  }
 </script>
 
 <!-- ============================================================
